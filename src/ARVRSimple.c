@@ -261,7 +261,7 @@ void arvr_return_projection_for_eye(godot_object *p_instance, void *p_data, godo
 	}
 };
 
-void arvr_commit_for_eye(godot_object *p_instance, void *p_data, godot_int p_eye, godot_rid p_rid, godot_rect2 *p_screen_rect) {
+void arvr_commit_for_eye(godot_object *p_instance, void *p_data, godot_int p_eye, godot_rid *p_render_target, godot_rect2 *p_screen_rect) {
 	// This function is responsible for outputting the final render buffer for each eye. 
 	// p_screen_rect will only have a value when we're outputting to the main viewport.
 
@@ -269,7 +269,7 @@ void arvr_commit_for_eye(godot_object *p_instance, void *p_data, godot_int p_eye
 	// For an interface that outputs to an external device we should render a copy of one of the eyes to the main viewport if p_screen_rect is set, and only output to the external device if not.
 
 	// printf("ARVRSimple.arvr_commit_for_eye()\n");
-
+	api->godot_nativearvr_blit(p_eye, p_render_target, p_screen_rect);
 
 
 };
