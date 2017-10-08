@@ -102,7 +102,7 @@ void arvr_set_anchor_detection_is_enabled(godot_object *p_instance, void *p_data
 godot_bool arvr_is_stereo(godot_object *p_instance, void *p_data) {
 	godot_bool ret;
 
-	printf("ARVRSimple.arvr_is_stereo()\n");
+	// printf("ARVRSimple.arvr_is_stereo()\n");
 	ret = true;
 
 	return ret;
@@ -154,7 +154,7 @@ void arvr_uninitialize(godot_object *p_instance, void *p_data) {
 godot_vector2 arvr_get_recommended_render_targetsize(godot_object *p_instance, void *p_data) {
 	godot_vector2 size;
 
-	printf("ARVRSimple.arvr_get_recommended_render_targetsize()\n");
+	// printf("ARVRSimple.arvr_get_recommended_render_targetsize()\n");
 
 	api->godot_vector2_new(&size, 500, 500);
 
@@ -170,7 +170,7 @@ godot_transform arvr_get_transform_for_eye(godot_object *p_instance, void *p_dat
 	godot_vector3 offset;
 	godot_real world_scale = 1.0; ///@TODO call arvr_server->get_world_scale()
 
-	printf("ARVRSimple.arvr_get_transform_for_eye()\n");
+	// printf("ARVRSimple.arvr_get_transform_for_eye()\n");
 
 	// create our transform from head center to eye
 	api->godot_transform_new_identity(&transform_for_eye);
@@ -236,7 +236,7 @@ void arvr_return_projection_for_eye(godot_object *p_instance, void *p_data, godo
 
 	// The code below is an example of calculating our stereoscopic projections based on head mounted devices.
 
-	printf("ARVRSimple.arvr_return_projection_for_eye()\n");
+	// printf("ARVRSimple.arvr_return_projection_for_eye()\n");
 
 	// we first calculate our base frustum on our values without taking our lens magnification into account.
 	godot_real f1 = (arvr_data->iod_cm * 0.5) / arvr_data->display_to_lens_cm;
@@ -268,7 +268,7 @@ void arvr_commit_for_eye(godot_object *p_instance, void *p_data, godot_int p_eye
 	// For an interface that must output to the main viewport (such as with mobile VR) we should give an error when p_screen_rect is not set
 	// For an interface that outputs to an external device we should render a copy of one of the eyes to the main viewport if p_screen_rect is set, and only output to the external device if not.
 
-	printf("ARVRSimple.arvr_commit_for_eye()\n");
+	// printf("ARVRSimple.arvr_commit_for_eye()\n");
 
 
 
@@ -277,6 +277,6 @@ void arvr_commit_for_eye(godot_object *p_instance, void *p_data, godot_int p_eye
 void arvr_process(godot_object *p_instance, void *p_data) {
 	// this method gets called before every frame is rendered, here is where you should update tracking data, update controllers, etc.
 
-	printf("ARVRSimple.arvr_process()\n");
+	// printf("ARVRSimple.arvr_process()\n");
 
 };
