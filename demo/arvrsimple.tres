@@ -5,7 +5,7 @@
 platform/X11_32bit = ""
 platform/X11_64bit = ""
 platform/Windows_32bit = ""
-platform/Windows_64bit = ""
+platform/Windows_64bit = "res://bin/arvrsimple.dll"
 platform/OSX = "res://bin/libarvrsimple.dylib"
 platform/Android = ""
 platform/iOS_32bit = ""
