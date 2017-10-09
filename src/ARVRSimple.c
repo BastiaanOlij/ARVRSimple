@@ -231,7 +231,7 @@ void arvr_set_frustum(godot_real *p_projection, godot_real p_left, godot_real p_
 	p_projection[15] = 0;
 };
 
-void godot_arvr_return_projection_for_eye(godot_object *p_instance, void *p_data, godot_real *p_projection, godot_int p_eye, godot_real p_aspect, godot_real p_z_near, godot_real p_z_far) {
+void godot_arvr_fill_projection_for_eye(godot_object *p_instance, void *p_data, godot_real *p_projection, godot_int p_eye, godot_real p_aspect, godot_real p_z_near, godot_real p_z_far) {
 	arvr_data_struct * arvr_data = (arvr_data_struct *) p_data;
 
 	// The code below is an example of calculating our stereoscopic projections based on head mounted devices.
