@@ -22,11 +22,9 @@ typedef struct arvr_data_struct {
 } arvr_data_struct;
 
 const godot_gdnative_api_struct *api = NULL;
-static godot_object *_arvr_server = NULL;
 
 void GDN_EXPORT godot_gdnative_init(godot_gdnative_init_options *p_options) {
 	api = p_options->api_struct;
-	_arvr_server = api->godot_global_get_singleton((char *) "ARVRServer");
 }
 
 void GDN_EXPORT godot_gdnative_terminate(godot_gdnative_terminate_options *p_options) {
@@ -168,7 +166,7 @@ godot_transform GDN_EXPORT godot_arvr_get_transform_for_eye(godot_object *p_inst
 	godot_transform reference_frame;
 	godot_transform ret;
 	godot_vector3 offset;
-	godot_real world_scale = 1.0; ///@TODO call arvr_server->get_world_scale()
+	godot_real world_scale = api->godot_arvr_get_worldscale();
 
 	// printf("ARVRSimple.arvr_get_transform_for_eye()\n");
 
