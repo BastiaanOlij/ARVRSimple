@@ -13,6 +13,7 @@
 #include <string.h>
 
 typedef struct arvr_data_struct {
+	godot_object * instance;
 	bool is_initialised;
 	float iod_cm;
 	float display_to_lens_cm;
@@ -41,6 +42,7 @@ void GDN_EXPORT *godot_arvr_constructor(godot_object *p_instance) {
 	printf("ARVRSimple.arvr_constructor()\n");
 
 	arvr_data_struct *arvr_data = api->godot_alloc(sizeof(arvr_data_struct));
+	arvr_data->instance = p_instance;
 	arvr_data->is_initialised = false;
 	arvr_data->iod_cm = 6.1;
 	arvr_data->display_to_lens_cm = 4.0;
@@ -53,7 +55,7 @@ void GDN_EXPORT *godot_arvr_constructor(godot_object *p_instance) {
 	return arvr_data;
 }
 
-void GDN_EXPORT godot_arvr_destructor(godot_object *p_instance, void *p_data) {
+void GDN_EXPORT godot_arvr_destructor(void *p_data) {
 	printf("ARVRSimple.arvr_destructor()\n");
 
 	if (p_data != NULL) {
@@ -63,17 +65,17 @@ void GDN_EXPORT godot_arvr_destructor(godot_object *p_instance, void *p_data) {
 	}
 }
 
-godot_string GDN_EXPORT godot_arvr_get_name(godot_object *p_instance, void *p_data) {
+godot_string GDN_EXPORT godot_arvr_get_name(void *p_data) {
 	godot_string ret;
 
-	printf("ARVRSimple.arvr_get_name(%p, %p)\n", p_instance, p_data);
+	printf("ARVRSimple.arvr_get_name\n");
 	char name[] = "ARVRSimple";
 	api->godot_string_new_data(&ret, name, strlen(name));
 
 	return ret;
 }
 
-godot_int GDN_EXPORT godot_arvr_get_capabilities(godot_object *p_instance, void *p_data) {
+godot_int GDN_EXPORT godot_arvr_get_capabilities(void *p_data) {
 	godot_int ret;
 
 	printf("ARVRSimple.arvr_get_capabilities()\n");
@@ -82,7 +84,7 @@ godot_int GDN_EXPORT godot_arvr_get_capabilities(godot_object *p_instance, void 
 	return ret;
 };
 
-godot_bool GDN_EXPORT godot_arvr_get_anchor_detection_is_enabled(godot_object *p_instance, void *p_data) {
+godot_bool GDN_EXPORT godot_arvr_get_anchor_detection_is_enabled(void *p_data) {
 	godot_bool ret;
 
 	printf("ARVRSimple.arvr_get_anchor_detection_is_enabled()\n");
@@ -91,13 +93,13 @@ godot_bool GDN_EXPORT godot_arvr_get_anchor_detection_is_enabled(godot_object *p
 	return ret;
 };
 
-void GDN_EXPORT godot_arvr_set_anchor_detection_is_enabled(godot_object *p_instance, void *p_data, bool p_enable) {
+void GDN_EXPORT godot_arvr_set_anchor_detection_is_enabled(void *p_data, bool p_enable) {
 	printf("ARVRSimple.arvr_set_anchor_detection_is_enabled()\n");
 
 	// we ignore this, not supported in this interface!
 };
 
-godot_bool GDN_EXPORT godot_arvr_is_stereo(godot_object *p_instance, void *p_data) {
+godot_bool GDN_EXPORT godot_arvr_is_stereo(void *p_data) {
 	godot_bool ret;
 
 	// printf("ARVRSimple.arvr_is_stereo()\n");
@@ -106,7 +108,7 @@ godot_bool GDN_EXPORT godot_arvr_is_stereo(godot_object *p_instance, void *p_dat
 	return ret;
 };
 
-godot_bool GDN_EXPORT godot_arvr_is_initialized(godot_object *p_instance, void *p_data) {
+godot_bool GDN_EXPORT godot_arvr_is_initialized(void *p_data) {
 	godot_bool ret;
 	arvr_data_struct *arvr_data = (arvr_data_struct *)p_data;
 
@@ -116,7 +118,7 @@ godot_bool GDN_EXPORT godot_arvr_is_initialized(godot_object *p_instance, void *
 	return ret;
 };
  
-godot_bool GDN_EXPORT godot_arvr_initialize(godot_object *p_instance, void *p_data) {
+godot_bool GDN_EXPORT godot_arvr_initialize(void *p_data) {
 	godot_bool ret;
 	arvr_data_struct * arvr_data = (arvr_data_struct *) p_data;
 
@@ -135,7 +137,7 @@ godot_bool GDN_EXPORT godot_arvr_initialize(godot_object *p_instance, void *p_da
 	return ret;
 };
 
-void GDN_EXPORT godot_arvr_uninitialize(godot_object *p_instance, void *p_data) {
+void GDN_EXPORT godot_arvr_uninitialize(void *p_data) {
 	arvr_data_struct * arvr_data = (arvr_data_struct *) p_data;
 
 	printf("ARVRSimple.arvr_uninitialize()\n");
@@ -149,7 +151,7 @@ void GDN_EXPORT godot_arvr_uninitialize(godot_object *p_instance, void *p_data) 
 	};
 };
 
-godot_vector2 GDN_EXPORT godot_arvr_get_recommended_render_targetsize(godot_object *p_instance, void *p_data) {
+godot_vector2 GDN_EXPORT godot_arvr_get_recommended_render_targetsize(void *p_data) {
 	godot_vector2 size;
 
 	// printf("ARVRSimple.arvr_get_recommended_render_targetsize()\n");
@@ -159,7 +161,7 @@ godot_vector2 GDN_EXPORT godot_arvr_get_recommended_render_targetsize(godot_obje
 	return size;
 };
 
-godot_transform GDN_EXPORT godot_arvr_get_transform_for_eye(godot_object *p_instance, void *p_data, godot_int p_eye, godot_transform *p_cam_transform) {
+godot_transform GDN_EXPORT godot_arvr_get_transform_for_eye(void *p_data, godot_int p_eye, godot_transform *p_cam_transform) {
 	arvr_data_struct * arvr_data = (arvr_data_struct *) p_data;
 	godot_transform transform_for_eye;
 	godot_transform hmd_transform;
@@ -229,7 +231,7 @@ void GDN_EXPORT arvr_set_frustum(godot_real *p_projection, godot_real p_left, go
 	p_projection[15] = 0;
 };
 
-void GDN_EXPORT godot_arvr_fill_projection_for_eye(godot_object *p_instance, void *p_data, godot_real *p_projection, godot_int p_eye, godot_real p_aspect, godot_real p_z_near, godot_real p_z_far) {
+void GDN_EXPORT godot_arvr_fill_projection_for_eye(void *p_data, godot_real *p_projection, godot_int p_eye, godot_real p_aspect, godot_real p_z_near, godot_real p_z_far) {
 	arvr_data_struct * arvr_data = (arvr_data_struct *) p_data;
 
 	// The code below is an example of calculating our stereoscopic projections based on head mounted devices.
@@ -259,7 +261,7 @@ void GDN_EXPORT godot_arvr_fill_projection_for_eye(godot_object *p_instance, voi
 	}
 };
 
-void GDN_EXPORT godot_arvr_commit_for_eye(godot_object *p_instance, void *p_data, godot_int p_eye, godot_rid *p_render_target, godot_rect2 *p_screen_rect) {
+void GDN_EXPORT godot_arvr_commit_for_eye(void *p_data, godot_int p_eye, godot_rid *p_render_target, godot_rect2 *p_screen_rect) {
 	// This function is responsible for outputting the final render buffer for each eye. 
 	// p_screen_rect will only have a value when we're outputting to the main viewport.
 
@@ -272,7 +274,7 @@ void GDN_EXPORT godot_arvr_commit_for_eye(godot_object *p_instance, void *p_data
 
 };
 
-void GDN_EXPORT godot_arvr_process(godot_object *p_instance, void *p_data) {
+void GDN_EXPORT godot_arvr_process(void *p_data) {
 	// this method gets called before every frame is rendered, here is where you should update tracking data, update controllers, etc.
 
 	// printf("ARVRSimple.arvr_process()\n");
