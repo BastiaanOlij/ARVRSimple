@@ -27,8 +27,6 @@ const godot_gdnative_api_struct *api = NULL;
 // forward declaration
 extern const godot_arvr_interface_gdnative interface_struct;
 
-
-
 void GDN_EXPORT godot_gdnative_init(godot_gdnative_init_options *p_options) {
 	api = p_options->api_struct;
 }
@@ -38,7 +36,7 @@ void GDN_EXPORT godot_gdnative_terminate(godot_gdnative_terminate_options *p_opt
 }
 
 void GDN_EXPORT godot_gdnative_singleton() {
-	godot_arvr_register_interface("ARVRSimple", &interface_struct);
+	api->godot_arvr_register_interface(&interface_struct);
 }
 
 void GDN_EXPORT *godot_arvr_constructor(godot_object *p_instance) {

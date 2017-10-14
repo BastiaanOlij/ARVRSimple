@@ -1,14 +1,8 @@
 extends Spatial
 
-var arvr_interface = null
-
 func _ready():
-	# we should move this code into a support file of sorts so it can be loaded in autoload
-	arvr_interface = ARVRInterfaceGDNative.new()
-	arvr_interface.set_interface("ARVRSimple")
-
-	# and then just find the interface
-#	arvr_interface = ARVRServer.find_interface("ARVRSimple")
+	# Find the interface
+	var arvr_interface = ARVRServer.find_interface("ARVRSimple")
 	if arvr_interface and arvr_interface.initialize():
 		get_viewport().arvr = true
 
