@@ -24,6 +24,11 @@ typedef struct arvr_data_struct {
 
 const godot_gdnative_api_struct *api = NULL;
 
+// forward declaration
+extern const godot_arvr_interface_gdnative interface_struct;
+
+
+
 void GDN_EXPORT godot_gdnative_init(godot_gdnative_init_options *p_options) {
 	api = p_options->api_struct;
 }
@@ -32,8 +37,8 @@ void GDN_EXPORT godot_gdnative_terminate(godot_gdnative_terminate_options *p_opt
 	api = NULL;
 }
 
-void GDN_EXPORT godot_nativescript_init(void *p_handle) {
-
+void GDN_EXPORT godot_gdnative_singleton() {
+	godot_arvr_register_interface("ARVRSimple", &interface_struct);
 }
 
 void GDN_EXPORT *godot_arvr_constructor(godot_object *p_instance) {
@@ -65,7 +70,7 @@ void GDN_EXPORT godot_arvr_destructor(void *p_data) {
 	}
 }
 
-godot_string GDN_EXPORT godot_arvr_get_name(void *p_data) {
+godot_string GDN_EXPORT godot_arvr_get_name(const void *p_data) {
 	godot_string ret;
 
 	printf("ARVRSimple.arvr_get_name\n");
@@ -75,7 +80,7 @@ godot_string GDN_EXPORT godot_arvr_get_name(void *p_data) {
 	return ret;
 }
 
-godot_int GDN_EXPORT godot_arvr_get_capabilities(void *p_data) {
+godot_int GDN_EXPORT godot_arvr_get_capabilities(const void *p_data) {
 	godot_int ret;
 
 	printf("ARVRSimple.arvr_get_capabilities()\n");
@@ -84,7 +89,7 @@ godot_int GDN_EXPORT godot_arvr_get_capabilities(void *p_data) {
 	return ret;
 };
 
-godot_bool GDN_EXPORT godot_arvr_get_anchor_detection_is_enabled(void *p_data) {
+godot_bool GDN_EXPORT godot_arvr_get_anchor_detection_is_enabled(const void *p_data) {
 	godot_bool ret;
 
 	printf("ARVRSimple.arvr_get_anchor_detection_is_enabled()\n");
@@ -99,7 +104,7 @@ void GDN_EXPORT godot_arvr_set_anchor_detection_is_enabled(void *p_data, bool p_
 	// we ignore this, not supported in this interface!
 };
 
-godot_bool GDN_EXPORT godot_arvr_is_stereo(void *p_data) {
+godot_bool GDN_EXPORT godot_arvr_is_stereo(const void *p_data) {
 	godot_bool ret;
 
 	// printf("ARVRSimple.arvr_is_stereo()\n");
@@ -108,7 +113,7 @@ godot_bool GDN_EXPORT godot_arvr_is_stereo(void *p_data) {
 	return ret;
 };
 
-godot_bool GDN_EXPORT godot_arvr_is_initialized(void *p_data) {
+godot_bool GDN_EXPORT godot_arvr_is_initialized(const void *p_data) {
 	godot_bool ret;
 	arvr_data_struct *arvr_data = (arvr_data_struct *)p_data;
 
@@ -151,7 +156,7 @@ void GDN_EXPORT godot_arvr_uninitialize(void *p_data) {
 	};
 };
 
-godot_vector2 GDN_EXPORT godot_arvr_get_recommended_render_targetsize(void *p_data) {
+godot_vector2 GDN_EXPORT godot_arvr_get_recommended_render_targetsize(const void *p_data) {
 	godot_vector2 size;
 
 	// printf("ARVRSimple.arvr_get_recommended_render_targetsize()\n");
@@ -279,4 +284,23 @@ void GDN_EXPORT godot_arvr_process(void *p_data) {
 
 	// printf("ARVRSimple.arvr_process()\n");
 
+};
+
+
+const godot_arvr_interface_gdnative interface_struct = {
+	godot_arvr_constructor,
+	godot_arvr_destructor,
+	godot_arvr_get_name,
+	godot_arvr_get_capabilities,
+	godot_arvr_get_anchor_detection_is_enabled,
+	godot_arvr_set_anchor_detection_is_enabled,
+	godot_arvr_is_stereo,
+	godot_arvr_is_initialized,
+	godot_arvr_initialize,
+	godot_arvr_uninitialize,
+	godot_arvr_get_recommended_render_targetsize,
+	godot_arvr_get_transform_for_eye,
+	godot_arvr_fill_projection_for_eye,
+	godot_arvr_commit_for_eye,
+	godot_arvr_process
 };
