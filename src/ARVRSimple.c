@@ -168,7 +168,7 @@ godot_transform GDN_EXPORT godot_arvr_get_transform_for_eye(void *p_data, godot_
 	arvr_data_struct * arvr_data = (arvr_data_struct *) p_data;
 	godot_transform transform_for_eye;
 	godot_transform hmd_transform;
-	godot_transform reference_frame;
+	godot_transform reference_frame = api->godot_arvr_get_reference_frame();
 	godot_transform ret;
 	godot_vector3 offset;
 	godot_real world_scale = api->godot_arvr_get_worldscale();
@@ -193,9 +193,6 @@ godot_transform GDN_EXPORT godot_arvr_get_transform_for_eye(void *p_data, godot_
 	api->godot_transform_new_identity(&hmd_transform);
 	api->godot_vector3_new(&offset, 0.0, arvr_data->eye_height * world_scale, 0.0);
 	hmd_transform = api->godot_transform_translated(&hmd_transform, &offset);
-
-	// and apply our reference frame, we need to call arvr_server->get_reference_frame()
-	api->godot_transform_new_identity(&reference_frame);
 
 	// Now construct our full transform, the order may be in reverse, have to test :)
 	ret = *p_cam_transform;
