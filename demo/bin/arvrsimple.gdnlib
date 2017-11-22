@@ -14,3 +14,20 @@ platform/iOS_64bit = ""
 platform/WebAssembly = ""
 _sections_unfolded = [ "platform" ]
 
+[general]
+
+singleton=true
+load_once=true
+symbol_prefix="godot_"
+
+[entry]
+
+X11.64="res://bin/libarvrsimple.so"
+Windows.64="res://bin/arvrsimple.dll"
+OSX="res://bin/libarvrsimple.dylib"
+
+[dependencies]
+
+X11.64=[]
+Windows=[]
+OSX.64=[]

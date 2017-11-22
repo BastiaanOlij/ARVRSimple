@@ -5,8 +5,6 @@
 
 // Written by Bastiaan "Mux213" Olij, with loads of help from Thomas "Karroffel" Herzog
 
-
-// #include <gdnative_api_struct.h>
 #include <gdnative_api_struct.gen.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -22,24 +20,41 @@ typedef struct arvr_data_struct {
 	float eye_height;
 } arvr_data_struct;
 
-const godot_gdnative_api_struct *api = NULL;
+const godot_gdnative_core_api_struct *api = NULL;
+const godot_gdnative_ext_arvr_api_struct *arvr_api = NULL;
+const godot_gdnative_ext_nativescript_api_struct *nativescript_api = NULL;
 
 // forward declaration
 extern const godot_arvr_interface_gdnative interface_struct;
 
 void GDN_EXPORT godot_gdnative_init(godot_gdnative_init_options *p_options) {
+	// get our main API struct
 	api = p_options->api_struct;
-}
+
+	// now find our arvr extension
+	for (int i = 0; i < api->num_extensions; i++) {
+		// todo: add version checks
+		switch (api->extensions[i]->type) {
+			case GDNATIVE_EXT_ARVR: {
+				arvr_api = (godot_gdnative_ext_arvr_api_struct *)api->extensions[i];
+			}; break;
+			case GDNATIVE_EXT_NATIVESCRIPT: {
+				nativescript_api = (godot_gdnative_ext_nativescript_api_struct *)api->extensions[i];
+			}; break;
+			default: break;
+		};
+	};
+};
 
 void GDN_EXPORT godot_gdnative_terminate(godot_gdnative_terminate_options *p_options) {
 	api = NULL;
 }
 
 void GDN_EXPORT godot_gdnative_singleton() {
-	api->godot_arvr_register_interface(&interface_struct);
+	arvr_api->godot_arvr_register_interface(&interface_struct);
 }
 
-void GDN_EXPORT *godot_arvr_constructor(godot_object *p_instance) {
+void *godot_arvr_constructor(godot_object *p_instance) {
 	godot_string ret;
 
 	printf("ARVRSimple.arvr_constructor()\n");
@@ -58,7 +73,7 @@ void GDN_EXPORT *godot_arvr_constructor(godot_object *p_instance) {
 	return arvr_data;
 }
 
-void GDN_EXPORT godot_arvr_destructor(void *p_data) {
+void godot_arvr_destructor(void *p_data) {
 	printf("ARVRSimple.arvr_destructor()\n");
 
 	if (p_data != NULL) {
@@ -68,7 +83,7 @@ void GDN_EXPORT godot_arvr_destructor(void *p_data) {
 	}
 }
 
-godot_string GDN_EXPORT godot_arvr_get_name(const void *p_data) {
+godot_string godot_arvr_get_name(const void *p_data) {
 	godot_string ret;
 
 	printf("ARVRSimple.arvr_get_name\n");
@@ -78,7 +93,7 @@ godot_string GDN_EXPORT godot_arvr_get_name(const void *p_data) {
 	return ret;
 }
 
-godot_int GDN_EXPORT godot_arvr_get_capabilities(const void *p_data) {
+godot_int godot_arvr_get_capabilities(const void *p_data) {
 	godot_int ret;
 
 	printf("ARVRSimple.arvr_get_capabilities()\n");
@@ -87,7 +102,7 @@ godot_int GDN_EXPORT godot_arvr_get_capabilities(const void *p_data) {
 	return ret;
 };
 
-godot_bool GDN_EXPORT godot_arvr_get_anchor_detection_is_enabled(const void *p_data) {
+godot_bool godot_arvr_get_anchor_detection_is_enabled(const void *p_data) {
 	godot_bool ret;
 
 	printf("ARVRSimple.arvr_get_anchor_detection_is_enabled()\n");
@@ -96,13 +111,13 @@ godot_bool GDN_EXPORT godot_arvr_get_anchor_detection_is_enabled(const void *p_d
 	return ret;
 };
 
-void GDN_EXPORT godot_arvr_set_anchor_detection_is_enabled(void *p_data, bool p_enable) {
+void godot_arvr_set_anchor_detection_is_enabled(void *p_data, bool p_enable) {
 	printf("ARVRSimple.arvr_set_anchor_detection_is_enabled()\n");
 
 	// we ignore this, not supported in this interface!
 };
 
-godot_bool GDN_EXPORT godot_arvr_is_stereo(const void *p_data) {
+godot_bool godot_arvr_is_stereo(const void *p_data) {
 	godot_bool ret;
 
 	// printf("ARVRSimple.arvr_is_stereo()\n");
@@ -111,7 +126,7 @@ godot_bool GDN_EXPORT godot_arvr_is_stereo(const void *p_data) {
 	return ret;
 };
 
-godot_bool GDN_EXPORT godot_arvr_is_initialized(const void *p_data) {
+godot_bool godot_arvr_is_initialized(const void *p_data) {
 	godot_bool ret;
 	arvr_data_struct *arvr_data = (arvr_data_struct *)p_data;
 
@@ -121,7 +136,7 @@ godot_bool GDN_EXPORT godot_arvr_is_initialized(const void *p_data) {
 	return ret;
 };
  
-godot_bool GDN_EXPORT godot_arvr_initialize(void *p_data) {
+godot_bool godot_arvr_initialize(void *p_data) {
 	godot_bool ret;
 	arvr_data_struct * arvr_data = (arvr_data_struct *) p_data;
 
@@ -140,7 +155,7 @@ godot_bool GDN_EXPORT godot_arvr_initialize(void *p_data) {
 	return ret;
 };
 
-void GDN_EXPORT godot_arvr_uninitialize(void *p_data) {
+void godot_arvr_uninitialize(void *p_data) {
 	arvr_data_struct * arvr_data = (arvr_data_struct *) p_data;
 
 	printf("ARVRSimple.arvr_uninitialize()\n");
@@ -154,7 +169,7 @@ void GDN_EXPORT godot_arvr_uninitialize(void *p_data) {
 	};
 };
 
-godot_vector2 GDN_EXPORT godot_arvr_get_recommended_render_targetsize(const void *p_data) {
+godot_vector2 godot_arvr_get_recommended_render_targetsize(const void *p_data) {
 	godot_vector2 size;
 
 	// printf("ARVRSimple.arvr_get_recommended_render_targetsize()\n");
@@ -164,14 +179,14 @@ godot_vector2 GDN_EXPORT godot_arvr_get_recommended_render_targetsize(const void
 	return size;
 };
 
-godot_transform GDN_EXPORT godot_arvr_get_transform_for_eye(void *p_data, godot_int p_eye, godot_transform *p_cam_transform) {
+godot_transform godot_arvr_get_transform_for_eye(void *p_data, godot_int p_eye, godot_transform *p_cam_transform) {
 	arvr_data_struct * arvr_data = (arvr_data_struct *) p_data;
 	godot_transform transform_for_eye;
 	godot_transform hmd_transform;
-	godot_transform reference_frame = api->godot_arvr_get_reference_frame();
+	godot_transform reference_frame = arvr_api->godot_arvr_get_reference_frame();
 	godot_transform ret;
 	godot_vector3 offset;
-	godot_real world_scale = api->godot_arvr_get_worldscale();
+	godot_real world_scale = arvr_api->godot_arvr_get_worldscale();
 
 	// printf("ARVRSimple.arvr_get_transform_for_eye()\n");
 
@@ -203,7 +218,7 @@ godot_transform GDN_EXPORT godot_arvr_get_transform_for_eye(void *p_data, godot_
 	return ret;
 };
 
-void GDN_EXPORT arvr_set_frustum(godot_real *p_projection, godot_real p_left, godot_real p_right, godot_real p_bottom, godot_real p_top, godot_real p_near, godot_real p_far) {
+void arvr_set_frustum(godot_real *p_projection, godot_real p_left, godot_real p_right, godot_real p_bottom, godot_real p_top, godot_real p_near, godot_real p_far) {
 
 	godot_real x = 2 * p_near / (p_right - p_left);
 	godot_real y = 2 * p_near / (p_top - p_bottom);
@@ -231,7 +246,7 @@ void GDN_EXPORT arvr_set_frustum(godot_real *p_projection, godot_real p_left, go
 	p_projection[15] = 0;
 };
 
-void GDN_EXPORT godot_arvr_fill_projection_for_eye(void *p_data, godot_real *p_projection, godot_int p_eye, godot_real p_aspect, godot_real p_z_near, godot_real p_z_far) {
+void godot_arvr_fill_projection_for_eye(void *p_data, godot_real *p_projection, godot_int p_eye, godot_real p_aspect, godot_real p_z_near, godot_real p_z_far) {
 	arvr_data_struct * arvr_data = (arvr_data_struct *) p_data;
 
 	// The code below is an example of calculating our stereoscopic projections based on head mounted devices.
@@ -261,7 +276,7 @@ void GDN_EXPORT godot_arvr_fill_projection_for_eye(void *p_data, godot_real *p_p
 	}
 };
 
-void GDN_EXPORT godot_arvr_commit_for_eye(void *p_data, godot_int p_eye, godot_rid *p_render_target, godot_rect2 *p_screen_rect) {
+void godot_arvr_commit_for_eye(void *p_data, godot_int p_eye, godot_rid *p_render_target, godot_rect2 *p_screen_rect) {
 	// This function is responsible for outputting the final render buffer for each eye. 
 	// p_screen_rect will only have a value when we're outputting to the main viewport.
 
@@ -269,18 +284,17 @@ void GDN_EXPORT godot_arvr_commit_for_eye(void *p_data, godot_int p_eye, godot_r
 	// For an interface that outputs to an external device we should render a copy of one of the eyes to the main viewport if p_screen_rect is set, and only output to the external device if not.
 
 	// printf("ARVRSimple.arvr_commit_for_eye()\n");
-	api->godot_arvr_blit(p_eye, p_render_target, p_screen_rect);
+	arvr_api->godot_arvr_blit(p_eye, p_render_target, p_screen_rect);
 
 
 };
 
-void GDN_EXPORT godot_arvr_process(void *p_data) {
+void godot_arvr_process(void *p_data) {
 	// this method gets called before every frame is rendered, here is where you should update tracking data, update controllers, etc.
 
 	// printf("ARVRSimple.arvr_process()\n");
 
 };
-
 
 const godot_arvr_interface_gdnative interface_struct = {
 	godot_arvr_constructor,
