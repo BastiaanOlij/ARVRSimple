@@ -88,7 +88,8 @@ godot_string godot_arvr_get_name(const void *p_data) {
 
 	printf("ARVRSimple.arvr_get_name\n");
 	char name[] = "ARVRSimple";
-	api->godot_string_new_data(&ret, name, strlen(name));
+	api->godot_string_new(&ret);
+	api->godot_string_parse_utf8(&ret, name);
 
 	return ret;
 }
