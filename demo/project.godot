@@ -16,7 +16,7 @@ config/icon="res://icon.png"
 
 [gdnative]
 
-singletons=[ "res://bin/arvrsimple.gdnlib" ]
+singletons=[ "res://addons/arvrsimple/arvrsimple.gdnlib" ]
 
 [rendering]
 
