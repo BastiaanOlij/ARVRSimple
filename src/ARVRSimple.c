@@ -57,8 +57,6 @@ void GDN_EXPORT godot_gdnative_singleton() {
 void *godot_arvr_constructor(godot_object *p_instance) {
 	godot_string ret;
 
-	printf("ARVRSimple.arvr_constructor()\n");
-
 	arvr_data_struct *arvr_data = api->godot_alloc(sizeof(arvr_data_struct));
 	arvr_data->instance = p_instance;
 	arvr_data->is_initialised = false;
@@ -68,17 +66,11 @@ void *godot_arvr_constructor(godot_object *p_instance) {
 	arvr_data->oversample = 1.0;
 	arvr_data->eye_height = 1.80;
 
-	printf("Allocated data at %p\n", arvr_data);
-
 	return arvr_data;
 }
 
 void godot_arvr_destructor(void *p_data) {
-	printf("ARVRSimple.arvr_destructor()\n");
-
 	if (p_data != NULL) {
-		printf("Freeing data at %p\n", p_data);
-
 		api->godot_free(p_data);
 	}
 }
@@ -86,7 +78,6 @@ void godot_arvr_destructor(void *p_data) {
 godot_string godot_arvr_get_name(const void *p_data) {
 	godot_string ret;
 
-	printf("ARVRSimple.arvr_get_name\n");
 	char name[] = "ARVRSimple";
 	api->godot_string_new(&ret);
 	api->godot_string_parse_utf8(&ret, name);
@@ -97,7 +88,6 @@ godot_string godot_arvr_get_name(const void *p_data) {
 godot_int godot_arvr_get_capabilities(const void *p_data) {
 	godot_int ret;
 
-	printf("ARVRSimple.arvr_get_capabilities()\n");
 	ret = 2; // 2 = ARVR_STEREO
 
 	return ret;
@@ -106,15 +96,12 @@ godot_int godot_arvr_get_capabilities(const void *p_data) {
 godot_bool godot_arvr_get_anchor_detection_is_enabled(const void *p_data) {
 	godot_bool ret;
 
-	printf("ARVRSimple.arvr_get_anchor_detection_is_enabled()\n");
 	ret = false; // does not apply here
 
 	return ret;
 };
 
 void godot_arvr_set_anchor_detection_is_enabled(void *p_data, bool p_enable) {
-	printf("ARVRSimple.arvr_set_anchor_detection_is_enabled()\n");
-
 	// we ignore this, not supported in this interface!
 };
 
@@ -131,7 +118,6 @@ godot_bool godot_arvr_is_initialized(const void *p_data) {
 	godot_bool ret;
 	arvr_data_struct *arvr_data = (arvr_data_struct *)p_data;
 
-	printf("ARVRSimple.arvr_is_initialized()\n");
 	ret = arvr_data == NULL ? false : arvr_data->is_initialised;
 
 	return ret;
@@ -140,8 +126,6 @@ godot_bool godot_arvr_is_initialized(const void *p_data) {
 godot_bool godot_arvr_initialize(void *p_data) {
 	godot_bool ret;
 	arvr_data_struct * arvr_data = (arvr_data_struct *) p_data;
-
-	printf("ARVRSimple.arvr_initialize()\n");
 
 	if (!arvr_data->is_initialised) {
 		// initialise this interface, so initialize any 3rd party libraries, open up HMD window if required, etc.
@@ -158,8 +142,6 @@ godot_bool godot_arvr_initialize(void *p_data) {
 
 void godot_arvr_uninitialize(void *p_data) {
 	arvr_data_struct * arvr_data = (arvr_data_struct *) p_data;
-
-	printf("ARVRSimple.arvr_uninitialize()\n");
 
 	if (arvr_data->is_initialised) {
 		// note, this will already be removed as the primary interface by ARVRInterfaceGDNative
