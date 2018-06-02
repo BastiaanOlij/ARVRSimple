@@ -9,7 +9,7 @@ reloadable=false
 
 X11.64="res://addons/arvrsimple/bin/x11/libarvrsimple.so"
 Windows.64="res://addons/arvrsimple/bin/win64/arvrsimple.dll"
-OSX.64="res://addsons/arvrsimple/bin/osx/libarvrsimple.dylib"
+OSX.64="res://addons/arvrsimple/bin/osx/libarvrsimple.dylib"
 
 [dependencies]
 
